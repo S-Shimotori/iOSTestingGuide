@@ -1,0 +1,196 @@
+\documentclass[10pt,twoside,openright]{jsbook}
+
+%------------------------------%
+% geometry
+%------------------------------%
+
+%\usepackage[pass,showframe]{geometry}
+\usepackage[pass]{geometry}
+
+%------------------------------%
+% afterpage
+%------------------------------%
+
+\usepackage{afterpage}
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}
+    \addtocounter{page}{-1}
+    \newpage
+}
+
+%------------------------------%
+% makeidx
+%------------------------------%
+
+\usepackage{imakeidx}
+\makeindex
+\indexsetup{othercode={\thispagestyle{plain}}}
+
+%------------------------------%
+% fancyhdr
+%------------------------------%
+
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\leftmark}
+\fancyhead[LE]{\rightmark}
+\fancyfoot[LE,RO]{\thepage}
+
+% TODO: apply beginning pages of chapter
+\fancypagestyle{plain}{%
+    \fancyhead{}
+    \fancyfoot[LE,RO]{\thepage}
+}
+
+%------------------------------%
+% color
+%------------------------------%
+
+\usepackage{color}
+%http://www.biwako.shiga-u.ac.jp/sensei/kumazawa/tex/color.html
+\input{colors/jpncolor}
+
+%------------------------------%
+% listings
+%------------------------------%
+
+\usepackage{listings,jlisting}
+\input{languages/swift}
+\input{languages/objectivec}
+
+%------------------------------%
+% biblatex
+%------------------------------%
+
+\usepackage[style=numeric]{biblatex}
+\addbibresource{bibliography.bib}
+
+%------------------------------%
+% development
+%------------------------------%
+
+\usepackage{lipsum}
+\usepackage{layout}
+
+%------------------------------%
+% title
+%------------------------------%
+
+\title{たいとる}
+\author{わたし}
+\date{\today}
+
+%------------------------------%
+% document
+%------------------------------%
+
+\begin{document}
+
+\newgeometry{hmarginratio=1:1}
+\maketitle
+\restoregeometry
+
+\afterpage{\blankpage}
+
+\pagenumbering{roman}
+
+\tableofcontents
+\thispagestyle{plain}
+
+\chapter*{はしがき}
+\thispagestyle{plain}
+\addcontentsline{toc}{chapter}{はしがき}
+\input{bodies/foreword}
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+%------------------------------%
+% TODO: delete
+
+\newgeometry{hmarginratio=1:1}
+\part{part}
+\restoregeometry
+
+\chapter{chapter}
+\thispagestyle{plain}
+\section{section}
+\subsection{subsection}
+ほげ\index{ほげ}\cite{hoge}
+\marginpar{ほげ}
+\chapter{listing}
+\thispagestyle{plain}
+\begin{lstlisting}[language=swift,caption=キャプション,label=ラベル]
+/*
+ * comment
+ */
+func hoge(int: Int) -> String {
+    return "int"    // return
+}
+
+hoge(100)
+
+struct Point {
+    let x: Int
+    let y: Float
+}
+\end{lstlisting}
+\begin{lstlisting}[language=objectivec,caption=キャプション,label=ラベル]
+#import <Foundation/Foundation.h>
+#import <stdio.h>
+
+/*
+ * comment
+ */
+@interface MyClass: NSObject {
+}
+- (void)myMethod;
+@end
+
+@implementation MyClass
+- (void)myMethod {
+    printf("Hello World.\n");
+}
+@end
+\end{lstlisting}
+
+
+\newgeometry{hmarginratio=1:1}
+\part{part}
+\restoregeometry
+
+\chapter{chapter}
+\thispagestyle{plain}
+\section{section}
+\subsection{subsection}
+
+はげ\cite{hage}
+
+\lipsum
+
+\subsection{subsection}
+
+\lipsum
+
+\subsection{subsection}
+
+\lipsum
+
+\subsection{subsection}
+
+\lipsum
+
+%------------------------------%
+
+\printbibheading[heading=bibintoc,title={参考文献}]
+\thispagestyle{plain}
+\printbibliography[heading=subbibintoc,type=article,title={Articles}]
+\printbibliography[heading=subbibintoc,type=book,title={Books}]
+
+\printindex
+
+\end{document}
+
