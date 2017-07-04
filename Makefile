@@ -4,5 +4,5 @@ all:
 	biber main
 	platex main
 	platex main
-	dvipdfmx main
+	dvipdfmx -d 5 main
 
