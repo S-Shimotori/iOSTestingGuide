@@ -78,8 +78,16 @@
 % biblatex
 %------------------------------%
 
-\usepackage[style=numeric,backend=biber]{biblatex}
-\addbibresource{bibliography.bib}
+\usepackage[style=numeric,backend=biber,defernumbers=true]{biblatex}
+\addbibresource{bibliographies/apple.bib}
+\addbibresource{bibliographies/articles.bib}
+\addbibresource{bibliographies/others.bib}
+
+%------------------------------%
+% accented letters
+%------------------------------%
+
+\usepackage[utf8]{inputenc}
 
 %------------------------------%
 % development
@@ -207,6 +215,8 @@ struct Point {
 \thispagestyle{plain}
 \printbibliography[heading=subbibintoc,type=article,title={Articles}]
 \printbibliography[heading=subbibintoc,type=book,title={Books}]
+\printbibliography[heading=subbibintoc,type=online,title={Onlines}]
+\printbibliography[heading=subbibintoc,type=github,title={GitHubs}]
 
 \printindex
 
