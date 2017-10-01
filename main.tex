@@ -174,82 +174,38 @@
 \input{bodies/foreword}
 
 \cleardoublepage
-\pagenumbering{arabic}
 
 %------------------------------%
-% TODO: delete
+
+\pagenumbering{arabic}
 
 \newgeometry{hmarginratio=1:1}
-\part{part}
+\part{規格で定められたソフトウェアテスト}\label{part:standard}
 \restoregeometry
 
-\chapter{chapter}
+\chapter{ソフトウェアテストの国際標準}\label{chapter:standard_international}
 \thispagestyle{plain}
-\section{section}
-\subsection{subsection}
-ほげ\index{ほげ}\cite{hoge}
-\marginpar{ほげ}
-\chapter{listing}
-\thispagestyle{plain}
-\begin{lstlisting}[language=swift,caption=キャプション,label=ラベル]
-/*
- * comment
- */
-func hoge(int: Int) -> String {
-    return "int"    // return
-}
-
-hoge(100)
-
-struct Point {
-    let x: Int
-    let y: Float
-}
-\end{lstlisting}
-\begin{lstlisting}[language=objectivec,caption=キャプション,label=ラベル]
-#import <Foundation/Foundation.h>
-#import <stdio.h>
-
-/*
- * comment
- */
-@interface MyClass: NSObject {
-}
-- (void)myMethod;
-@end
-
-@implementation MyClass
-- (void)myMethod {
-    printf("Hello World.\n");
-}
-@end
-\end{lstlisting}
-
+\input{bodies/standards/international}
 
 \newgeometry{hmarginratio=1:1}
-\part{part}
+\part{Appleが提供するソフトウェアテスト}\label{part:apple}
 \restoregeometry
 
-\chapter{chapter}
+\chapter{Apple標準のテストフレームワーク}
 \thispagestyle{plain}
-\section{section}
-\subsection{subsection}
+\input{bodies/apple/framework}
 
-はげ\cite{hage}
+\chapter{Appleによるテストのガイドライン}
+\thispagestyle{plain}
+\input{bodies/apple/guide}
 
-\lipsum
+\newgeometry{hmarginratio=1:1}
+\part{サードパーティライブラリとテスト}\label{part:thirdparty}
+\restoregeometry
 
-\subsection{subsection}
-
-\lipsum
-
-\subsection{subsection}
-
-\lipsum
-
-\subsection{subsection}
-
-\lipsum
+\chapter{iOSライブラリにおけるテスト事例}
+\thispagestyle{plain}
+\input{bodies/thirdparty/case}
 
 %------------------------------%
 
