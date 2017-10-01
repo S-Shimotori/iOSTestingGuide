@@ -1,0 +1,27 @@
+ネットワークリクエストを行うライブラリはどのようにテストを行っているのだろうか．
+
+\ref{chapter:thirdparty_framework}章ではネットワークリクエストスタブフレームワークの\href{https://github.com/AliSoftware/OHHTTPStubs}{AliSoftware/OHHTTPStubs: Stub your network requests easily! Test your apps with fake network data and custom response time, response code and headers!}を紹介した．\href{https://github.com/ishkawa/APIKit}{ishkawa/APIKit: Type-safe networking abstraction layer that associates request type with response type.}はOHHTTPStubs(のちに独自のスタブへ変更)を用いてテストを行っているライブラリである．変更の経緯については\ref{section:thirdparty_case_spm}節で述べる．
+
+実際のサーバと通信を行ってテストを行うライブラリも存在する．\href{https://httpbin.org/}{httpbin(1): HTTP Client Testing Service}はHTTPリクエスト\&レスポンスサービスサイトで，エンドポイント毎にさまざまなレスポンスを返す．\href{https://github.com/Alamofire/Alamofire}{Alamofire/Alamofire: Elegant HTTP Networking in Swift}ではこのエンドポイントを利用してリクエストテストを行っている．プログラム\ref{lstlisting:Alamofire/Alamofire:c20e17e:Tests/RequestTests.swift:44-57}はパラメータとともにGETリクエストを行うテストである．リクエストに正しいパラメータが含まれているかどうか，レスポンスがあったかどうかをアサーションで確かめている．
+
+\begin{lstlisting}[language=swift,caption=\href{https://github.com/Alamofire/Alamofire/blob/c20e17e38eadefbc6d77332290e5b7e84eb15932/Tests/RequestTests.swift}{Alamofireでのパラメータ付きGETリクエストテスト},label=lstlisting:Alamofire/Alamofire:c20e17e:Tests/RequestTests.swift:44-57,firstnumber=44]
+    func testRequestClassMethodWithMethodAndURLAndParameters() {
+        // Given
+        let urlString = "https://httpbin.org/get"
+
+        // When
+        let request = Alamofire.request(urlString, parameters: ["foo": "bar"])
+
+        // Then
+        XCTAssertNotNil(request.request)
+        XCTAssertEqual(request.request?.httpMethod, "GET")
+        XCTAssertNotEqual(request.request?.url?.absoluteString, urlString)
+        XCTAssertEqual(request.request?.url?.query, "foo=bar")
+        XCTAssertNil(request.response)
+    }
+\end{lstlisting}
+
+一方，メール送信ライブラリ\href{https://github.com/onevcat/Hedwig}{onevcat/Hedwig: Send email to any SMTP server like a boss, in Swift and cross-platform}ではライブラリ作者の所有するドメインからのメール送信を試みている．以前はnpmによるローカルサーバを使用していた．
+% コミット: 485df427e36c0886e57a2070cdfc78b27ca2a131
+
+

@@ -1,0 +1,17 @@
+Swift Package Manager，ひいてはLinuxへの各ライブラリの対応を紹介する．
+
+\ref{section:thirdparty_case_network}節でAPIKitがOHHTTPStubsの使用を取りやめたことを紹介した．これは，Swift Package Managerをサポートするにあたり，OHHTTPStubsがCocoaPodsとCarthageのみの対応でSwift Package Managerでインストールできないためである．そこで，APIKitではswift testコマンドを実行できるよう機能縮小した独自の{\sf HTTPStub}へ変更した\cite{github:ishkawa/APIKit:130}\cite{github:ishkawa/APIKit:209}．
+
+Swift Package Managerに対応しながらもテストを除外しているライブラリもある．このようなライブラリでは，.xcodeprojにのみテストファイルを登録し，Package.swiftからは除外している．プログラム\ref{lstlisting:Alamofire/Alamofire:b899544:Package.swift:27}はAlamofireのPackage.swiftの，プログラム\ref{lstlisting:onevcat/Kingfisher:3b76bc6:Package.swift:29-32}はKingfisherのPackage.swiftである．Kingfisherではテストの他にUIKitに関係するSwiftファイルも除外している．
+
+\begin{lstlisting}[language=swift,caption=\href{https://github.com/Alamofire/Alamofire/blob/b8995447518fd57af14c88a47f27434a16f60403/Package.swift}{Alamofireのパッケージ設定},label=lstlisting:Alamofire/Alamofire:b899544:Package.swift:27,firstnumber=27]
+let package = Package(name: "Alamofire", dependencies : [], exclude: ["Tests"])
+\end{lstlisting}
+
+\begin{lstlisting}[language=swift,caption=\href{https://github.com/onevcat/Kingfisher/blob/3b76bc6ca9f56d5fd5635439eda9318eff7945e3/Package.swift}{Kingfisherのパッケージ設定},label=lstlisting:onevcat/Kingfisher:3b76bc6:Package.swift:29-32,firstnumber=29]
+let package = Package(
+  name: "Kingfisher",
+  exclude: ["Tests","Sources/AnimatedImageView.swift","Sources/UIButton+Kingfisher.swift"]
+)
+\end{lstlisting}
+

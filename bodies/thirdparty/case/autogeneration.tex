@@ -1,0 +1,38 @@
+ライブラリの中にはテストコードを自動生成しているものもある．ここでは\href{https://github.com/ReactiveX/RxSwift}{ReactiveX/RxSwift: Reactive Programming in Swift}を紹介する．
+
+RxSwiftではPreprocessorターゲットにソースコード自動生成のプロジェクトを用意している．独自のプログラムにより*.ttファイルを*.swiftに変換する．パフォーマンス，一貫性のため，開発者を重荷から解放するため，そして楽しいからという理由による\cite{github:ReactiveX/RxSwift:Preprocessor/README.md}．*.ttファイル中では{\sf \textless\%= \%\textgreater}を用いてスクリプトを書くことができる．例えば，{\sf Observable}の{\sf zip}メソッドの場合，{\sf i = 2 \ldots 8}の範囲でプログラム\ref{lstlisting:ReactiveX/RxSwift:b32a0f0:RxSwift/Observables/Zip+arity.tt:22-29}からプログラム\ref{lstlisting:ReactiveX/RxSwift:b32a0f0:RxSwift/Observables/Zip+arity.swift:23-30}が生成される．テストメソッドについてもプログラム\ref{lstlisting:ReactiveX/RxSwift:b32a0f0:Tests/RxSwiftTests/Observable+ZipTests+arity.tt:14-20}のようなttファイルが用意されている．
+
+\begin{lstlisting}[language=swift,caption=\href{https://github.com/ReactiveX/RxSwift/blob/b32a0f0d40656672783749d23e2984bf337adcec/RxSwift/Observables/Zip+arity.tt}{{\sf zip}メソッドのテンプレート},label=lstlisting:ReactiveX/RxSwift:b32a0f0:RxSwift/Observables/Zip+arity.tt:22-29,firstnumber=22]
+    public static func zip<<%= (Array(1...i).map { "O\($0): ObservableType" }).joined(separator: ", ") %>>
+        (<%= (Array(1...i).map { "_ source\($0): O\($0)" }).joined(separator: ", ") %>, resultSelector: @escaping (<%= (Array(1...i).map { "O\($0).E" }).joined(separator: ", ") %>) throws -> E)
+        -> Observable<E> {
+        return Zip<%= i %>(
+            <%= (Array(1...i).map { "source\($0): source\($0).asObservable()" }).joined(separator: ", ") %>,
+            resultSelector: resultSelector
+        )
+    }
+\end{lstlisting}
+
+\begin{lstlisting}[language=swift,caption=\href{https://github.com/ReactiveX/RxSwift/blob/b32a0f0d40656672783749d23e2984bf337adcec/RxSwift/Observables/Zip+arity.swift}{自動生成された{\sf zip}メソッド},label=lstlisting:ReactiveX/RxSwift:b32a0f0:RxSwift/Observables/Zip+arity.swift:23-30,firstnumber=23]
+    public static func zip<O1: ObservableType, O2: ObservableType>
+        (_ source1: O1, _ source2: O2, resultSelector: @escaping (O1.E, O2.E) throws -> E)
+        -> Observable<E> {
+        return Zip2(
+            source1: source1.asObservable(), source2: source2.asObservable(),
+            resultSelector: resultSelector
+        )
+    }
+\end{lstlisting}
+
+\begin{lstlisting}[language=swift,caption=\href{https://github.com/ReactiveX/RxSwift/blob/b32a0f0d40656672783749d23e2984bf337adcec/Tests/RxSwiftTests/Observable+ZipTests+arity.tt}{{\sf zip}メソッドのテストテンプレート},label=lstlisting:ReactiveX/RxSwift:b32a0f0:Tests/RxSwiftTests/Observable+ZipTests+arity.tt:14-20,firstnumber=14]
+extension ObservableZipTest {
+<% for i in 2 ... 8 { %>
+
+    // <%= i %>
+
+    func testZip_ImmediateSchedule<%= i %>() {
+        let factories: [(<%= (Array(0..<i).map { _ in "Observable<Int>" }).joined(separator: ", ") %>) -> Observable<Int>] =
+\end{lstlisting}
+
+ソースコードを自動生成しているライブラリには他にも\href{https://github.com/thoughtbot/Curry}{thoughtbot/Curry: Swift implementations for function currying}があるが，Curryはテストを行っていない．なお，RxSwiftもCurryも関数型プログラミングの考え方が背景にあるライブラリである．
+

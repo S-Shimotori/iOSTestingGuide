@@ -98,6 +98,7 @@
 \usepackage[style=numeric,backend=biber,defernumbers=true]{biblatex}
 \addbibresource{bibliographies/apple.bib}
 \addbibresource{bibliographies/articles.bib}
+\addbibresource{bibliographies/github.bib}
 \addbibresource{bibliographies/others.bib}
 
 %------------------------------%
@@ -202,6 +203,10 @@
 \newgeometry{hmarginratio=1:1}
 \part{サードパーティライブラリとテスト}\label{part:thirdparty}
 \restoregeometry
+
+\chapter{サードパーティ製テストフレームワーク}\label{chapter:thirdparty_framework}
+\thispagestyle{plain}
+\input{bodies/thirdparty/framework}
 
 \chapter{iOSライブラリにおけるテスト事例}
 \thispagestyle{plain}

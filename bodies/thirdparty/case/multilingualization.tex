@@ -1,0 +1,39 @@
+iOSライブラリの中には多言語にまたがるプロジェクトのライブラリがある．
+
+\href{https://promisesaplus.com/}{Promises/A+}は非同期処理表現promiseの公開基準で，\href{http://wiki.commonjs.org/wiki/Promises/A}{Promises/A - CommonJS Spec Wiki}の派生である．Promises/A+仕様はpromiseの{\sf then}メソッドを提供する一方で，create，fulfill，reject操作を扱うものではない\cite{promisesaplus.com}．\href{https://github.com/promises-aplus/promises-tests}{promises-aplus/promises-tests: Compliances tests for Promises/A+}リポジトリにあるテストに成功すれば，Promises/A+の定める{\sf then}メソッドが実装されているとしてREADMEにPromises/A+ロゴを掲載することができる\cite{github:promises-aplus/promises-tests}．図\ref{figure:promisesaplus.com:logo}はPromises/A+のロゴである．
+
+\begin{figure}
+    \centering
+    \includegraphics{images/bodies/thirdparty/case/promisesaplus_logo-small.png}
+    \caption{Promises/A+のロゴ}
+    \label{figure:promisesaplus.com:logo}
+\end{figure}
+
+\href{https://github.com/mxcl/PromiseKit}{mxcl/PromiseKit: Promises for Swift \& ObjC}はSwiftとObjective-Cにpromiseを提供するライブラリである．PromiseKitのテストにはA+，Bridging，CorePromiseの3種類があり，このうちのA+で\href{https://github.com/promises-aplus/promises-tests}{promises-aplus/promises-tests: Compliances tests for Promises/A+}のテストを行っている．ただしJavaScriptとSwiftの言語仕様の違いから一部の項目はスキップされている\cite{github:mxcl/PromiseKit:Tests/A+/README.md}．
+
+\begin{lstlisting}[language=javascript,caption=\href{https://github.com/promises-aplus/promises-tests/blob/4bab3171e3aeb4b3612c84ef28c128eb430be0a6/lib/tests/2.1.2.js}{Promises/A+におけるテスト2.1.2.1},label=lstlisting:promises-aplus/promises-tests:4bab317:lib/tests/2.1.2.js:11-23,firstnumber=11]
+describe("2.1.2.1: When fulfilled, a promise: must not transition to any other state.", function () {
+    testFulfilled(dummy, function (promise, done) {
+        var onFulfilledCalled = false;
+
+        promise.then(function onFulfilled() {
+            onFulfilledCalled = true;
+        }, function onRejected() {
+            assert.strictEqual(onFulfilledCalled, false);
+            done();
+        });
+
+        setTimeout(done, 100);
+    });
+\end{lstlisting}
+
+\begin{lstlisting}[language=swift,caption=\href{https://github.com/mxcl/PromiseKit/blob/b1dd2bf874002e7fa142cd0a1356528e204f5779/Tests/A+/2.1.2.swift}{PromiseKitにおけるテスト2.1.2.1},label=lstlisting:mxcl/PromiseKit:b1dd2bf:Tests/A+/2.1.2.swift:4-9,firstnumber=4]
+class Test212: XCTestCase {
+    func test() {
+        describe("2.1.2.1: When fulfilled, a promise: must not transition to any other state.") {
+            testFulfilled { promise, expectation, _ in
+                promise.test(onFulfilled: expectation.fulfill, onRejected: { XCTFail() })
+            }
+\end{lstlisting}
+
+プログラム\ref{lstlisting:promises-aplus/promises-tests:4bab317:lib/tests/2.1.2.js:11-23}はA+が定める2.1.2.1の，プログラム\ref{lstlisting:mxcl/PromiseKit:b1dd2bf:Tests/A+/2.1.2.swift:4-9}はPromiseKitで行われている2.1.2.1のテストコードの冒頭である．A+は\href{https://mochajs.org/}{Mocha - the fun, simple, flexible JavaScript test framework}の，PromiseKitは独自実装の{\sf describe}メソッドを用いてビヘイビア駆動のテストを行っている．
